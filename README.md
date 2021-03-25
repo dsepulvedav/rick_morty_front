@@ -1,20 +1,32 @@
-# rick_morty_front
+# Rick and Morty Challenge - Frontend
 
-## Build Setup
+Este repositorio contiene el frontend del [desafío Rick and Morty](https://www.notion.so/Rick-and-Morty-Challenge-84a1b794dc09429fb3178c2a24e7c217 "desafío Rick and Morty") de Chipax, desarrollado con Nuxt.js.
+### Características
+
+- Ruta **/char-counter**: Consume directamente la Rick and Morty API.
+- Ruta **/episode-locations**: Consume un orquestador sobre API Gateway (en node.js) de los endpoints de Rick and Morty API necesarios.
+
+
+## Comandos de compilación
+Sobre la raíz del repositorio ejecutar los siguientes comandos:
 
 ```bash
-# install dependencies
+# instalación de dependencias
 $ npm install
 
-# serve with hot reload at localhost:3000
+# correr servidor con hot reload en localhost:3000
 $ npm run dev
 
-# build for production and launch server
+# compilar para producción e iniciar servidor
 $ npm run build
 $ npm run start
 
-# generate static project
+# generar proyecto estático
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+### Vista previa
+
+En el siguiente link se disponibiliza una compilación de sitio estático para demostración:
+
+http://rick-morty-front.s3-website-us-east-1.amazonaws.com/
