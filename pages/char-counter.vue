@@ -113,7 +113,7 @@ export default Vue.extend({
           const arrMatches = this.locationResults
             .map( i => i.name )
             .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(/l/g);
+            .match(new RegExp(this.locationQuery, 'g'));
           this.locationCount = (arrMatches || []).length;
         }
       )
@@ -137,10 +137,13 @@ export default Vue.extend({
       this.getAllEpisodes('').then(
         resEpisodes => {
           this.episodeResults = resEpisodes;
+          console.log({resEpisodes})
           const arrMatches = this.episodeResults
             .map( i => i.name )
             .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(/l/g);
+            .match(new RegExp(this.episodeQuery, 'g'));
+          console.log({arrMatches})
+          
           this.episodeCount = (arrMatches || []).length;
         }
       )
@@ -166,7 +169,7 @@ export default Vue.extend({
           const arrMatches = this.characterResults
             .map( i => i.name )
             .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(/l/g);
+            .match(new RegExp(this.characterQuery, 'g'));
           this.characterCount = (arrMatches || []).length;
         }
       )
