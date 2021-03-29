@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-2">
+  <v-card class="ma-2">
     <v-card-title>
       {{ location.name }}
     </v-card-title>

@@ -2,59 +2,99 @@
 
 <v-container>
   <v-row class="my-5">
-    <v-col>
+    <v-col class="text-center">
       <h1>Char counter</h1>
       <h4>Program duration: {{ programDuration }} milliseconds</h4>
     </v-col>
   </v-row>
 
-  <v-row>
-    <v-col><h3>Locations with '{{locationQuery}}' matches</h3></v-col>
-    <v-col>
-      {{locationCount}} locations
-    </v-col>
-  </v-row>
   <v-row class="mb-8">
     <v-col>
-      <v-slide-group v-if="locationResults.length" show-arrows>
-        <v-slide-item v-bind:key="location.name" v-for="location in locationResults">
-          <LocationCard :location="location" />
-        </v-slide-item>
-      </v-slide-group>
+      <v-card>
+        <v-card-title>
+          <h4>Locations with '{{locationQuery}}' matches</h4>
+          <v-spacer></v-spacer>
+          <v-chip class="ma-2" color="green" text-color="white">
+            <v-avatar left class="green darken-4">
+              {{locationCount}}
+            </v-avatar>
+            locations
+          </v-chip>
+        </v-card-title>
+        <v-card-text>
+          <v-slide-group v-if="locationResults.length" show-arrows>
+            <v-slide-item v-bind:key="location.name" v-for="location in locationResults">
+              <LocationCard :location="location" />
+            </v-slide-item>
+          </v-slide-group>
+          <v-slide-group v-else>
+            <v-slide-item v-bind:key="i" v-for="i in loadingCards">
+              <LoadingCard />
+            </v-slide-item>
+          </v-slide-group>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 
-  <v-row>
-    <v-col><h3>Episodes with '{{episodeQuery}}' matches</h3></v-col>
+  <v-row class="mb-8">
     <v-col>
-      {{episodeCount}} episodes
-    </v-col>
-  </v-row>
-  <v-row class="mb-5">
-    <v-col>
-      <v-slide-group v-if="episodeResults.length" show-arrows>
-        <v-slide-item v-bind:key="episode.name" v-for="episode in episodeResults">
-          <EpisodeCard :episode="episode" />
-        </v-slide-item>
-      </v-slide-group>
+      <v-card>
+        <v-card-title>
+          <h4>Episodes with '{{episodeQuery}}' matches</h4>
+          <v-spacer></v-spacer>
+          <v-chip class="ma-2" color="green" text-color="white">
+            <v-avatar left class="green darken-4">
+              {{episodeCount}}
+            </v-avatar>
+            episodes
+          </v-chip>
+        </v-card-title>
+        <v-card-text>
+          <v-slide-group v-if="episodeResults.length" show-arrows>
+            <v-slide-item v-bind:key="episode.name" v-for="episode in episodeResults">
+              <EpisodeCard :episode="episode" />
+            </v-slide-item>
+          </v-slide-group>
+          <v-slide-group v-else>
+            <v-slide-item v-bind:key="i" v-for="i in loadingCards">
+              <LoadingCard />
+            </v-slide-item>
+          </v-slide-group>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 
-  <v-row>
-    <v-col><h3>Characters with '{{characterQuery}}' matches</h3></v-col>
+  <v-row class="mb-8">
     <v-col>
-      {{characterCount}} characters
+      <v-card>
+        <v-card-title>
+          <h4>Characters with '{{characterQuery}}' matches</h4>
+          <v-spacer></v-spacer>
+          <v-chip class="ma-2" color="green" text-color="white">
+            <v-avatar left class="green darken-4">
+              {{characterCount}}
+            </v-avatar>
+            characters
+          </v-chip>
+        </v-card-title>
+        <v-card-text>
+          <v-slide-group v-if="characterResults.length" show-arrows>
+            <v-slide-item v-bind:key="character.name+index" v-for="(character, index) in characterResults">
+              <CharacterCard :character="character" />
+            </v-slide-item>
+          </v-slide-group>
+          <v-slide-group v-else>
+            <v-slide-item v-bind:key="i" v-for="i in loadingCards">
+              <LoadingCard />
+            </v-slide-item>
+          </v-slide-group>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
-  <v-row>
-    <v-col>
-      <v-slide-group v-if="characterResults.length" show-arrows>
-        <v-slide-item v-bind:key="character.name" v-for="character in characterResults">
-          <CharacterCard :character="character" />
-        </v-slide-item>
-      </v-slide-group>
-    </v-col>
-  </v-row>
+
 </v-container>
 
 </template>
@@ -62,6 +102,7 @@
 <script lang="ts">
 
 import Vue from 'vue'
+import LoadingCard from '~/components/LoadingCard.vue';
 import LocationCard from '~/components/LocationCard.vue';
 import EpisodeCard from '~/components/EpisodeCard.vue';
 import CharacterCard from '~/components/CharacterCard.vue';
@@ -72,6 +113,7 @@ import { Character } from '~/models/character';
 
 export default Vue.extend({
   components: {
+    LoadingCard,
     LocationCard,
     EpisodeCard,
     CharacterCard
@@ -96,6 +138,8 @@ export default Vue.extend({
       characterResults: <Character[]>[],
       startTime: new Date(),
       finishTime: new Date(),
+
+      loadingCards: [1, 2, 3, 4, 5, 6, 7, 8]
     }
   },
   mounted() {
