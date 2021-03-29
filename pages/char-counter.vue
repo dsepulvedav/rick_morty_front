@@ -65,7 +65,10 @@ import Vue from 'vue'
 import LocationCard from '~/components/LocationCard.vue';
 import EpisodeCard from '~/components/EpisodeCard.vue';
 import CharacterCard from '~/components/CharacterCard.vue';
+import { Location } from '~/models/Location';
 import { calculateDuration } from '~/utils/timeUtils'
+import { Episode } from '~/models/episode';
+import { Character } from '~/models/character';
 
 export default Vue.extend({
   components: {
@@ -84,54 +87,105 @@ export default Vue.extend({
       episodeQuery: 'e',
       characterQuery: 'c',
 
-      locationCount: null,
-      episodeCount: null,
-      characterCount: null,
+      locationCount: 0,
+      episodeCount: 0,
+      characterCount: 0,
 
-      locationResults: [],
-      episodeResults: [],
-      characterResults: [],
+      locationResults: <Location[]>[],
+      episodeResults: <Episode[]>[],
+      characterResults: <Character[]>[],
       startTime: new Date(),
       finishTime: new Date(),
     }
   },
   mounted() {
     this.startTime = new Date();
-    this.getAllLocations();
-    this.getAllEpisodes();
-    this.getAllCharacters();
+    this.getLocations();
+    this.getEpisodes();
+    this.getCharacters();
   },
   methods: {
-    getAllLocations() {
-      this.$axios.get(`location/?name=${this.locationQuery}`).then(
+    
+    getLocations() {
+      this.getAllLocations('').then(
         resLocations => {
-          this.locationCount = resLocations.data.info.count;
-          this.locationResults = resLocations.data.results;
+          this.locationResults = resLocations;
+          const arrMatches = this.locationResults
+            .map( i => i.name )
+            .reduce( (a, b) => `${a}${b}`).toLowerCase()
+            .match(/l/g);
+          this.locationCount = (arrMatches || []).length;
         }
-      ).catch( err => {
+      )
+      .catch( err => {
         console.error('ERROR in getAllLocations()', err);
       }).finally(() => this.finishTime = new Date());
     },
-    getAllEpisodes() {
-      this.$axios.get(`episode/?name=${this.episodeQuery}`).then(
+    getAllLocations(cursor: string, data = [] as Location[]) : Promise<Location[]>{
+      const nextPage = cursor ? cursor.split('/').pop()! : ''
+      const url = nextPage ? `location/${nextPage}` : `location/?name=${this.locationQuery}`
+      return this.$axios.get(url)
+        .then(response => {
+          data.push(...response.data.results)
+            if (!response.data.info.next ) return data
+            return this.getAllLocations(response.data.info.next, data)
+        })
+    },
+
+
+    getEpisodes() {
+      this.getAllEpisodes('').then(
         resEpisodes => {
-          this.episodeCount = resEpisodes.data.info.count;
-          this.episodeResults = resEpisodes.data.results;
+          this.episodeResults = resEpisodes;
+          const arrMatches = this.episodeResults
+            .map( i => i.name )
+            .reduce( (a, b) => `${a}${b}`).toLowerCase()
+            .match(/l/g);
+          this.episodeCount = (arrMatches || []).length;
         }
-      ).catch( err => {
-        console.error('ERROR in getAllLocations()', err);
+      )
+      .catch( err => {
+        console.error('ERROR in getAllEpisodes()', err);
       }).finally(() => this.finishTime = new Date());
     },
-    getAllCharacters() {
-      this.$axios.get(`character/?name=${this.characterQuery}`).then(
+    getAllEpisodes(cursor: string, data = [] as Episode[]) : Promise<Episode[]>{
+      const nextPage = cursor ? cursor.split('/').pop()! : ''
+      const url = nextPage ? `episode/${nextPage}` : `episode/?name=${this.episodeQuery}`
+      return this.$axios.get(url)
+        .then(response => {
+          data.push(...response.data.results)
+            if (!response.data.info.next ) return data
+            return this.getAllEpisodes(response.data.info.next, data)
+        })
+    },
+
+    getCharacters() {
+      this.getAllCharacters('').then(
         resCharacters => {
-          this.characterCount = resCharacters.data.info.count;
-          this.characterResults = resCharacters.data.results;
+          this.characterResults = resCharacters;
+          const arrMatches = this.characterResults
+            .map( i => i.name )
+            .reduce( (a, b) => `${a}${b}`).toLowerCase()
+            .match(/l/g);
+          this.characterCount = (arrMatches || []).length;
         }
-      ).catch( err => {
-        console.error('ERROR in getAllLocations()', err);
+      )
+      .catch( err => {
+        console.error('ERROR in getAllCharacters()', err);
       }).finally(() => this.finishTime = new Date());
-    }
+    },
+    getAllCharacters(cursor: string, data = [] as Character[]) : Promise<Character[]>{
+      const nextPage = cursor ? cursor.split('/').pop()! : ''
+      const url = nextPage ? `character/${nextPage}` : `character/?name=${this.characterQuery}`
+      return this.$axios.get(url)
+        .then(response => {
+          data.push(...response.data.results)
+            if (!response.data.info.next ) return data
+            return this.getAllCharacters(response.data.info.next, data)
+        })
+    },
+
+
   },
 })
 
