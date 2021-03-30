@@ -6,13 +6,28 @@
     <v-card-text>
       <div class="pa-5">
         <v-row>
-          Episode: <strong>{{episode.episode}}</strong>
+          <v-col>
+            <div>Episode</div>
+            <div>
+              <strong>{{episode.episode}}</strong>
+            </div>
+          </v-col>
+          <v-col>
+            <div>Characters</div>
+            <div>
+              <strong>{{episode.characters.length}}</strong>
+            </div>
+          </v-col>
         </v-row>
         <v-row>
-          Air date: <strong>{{episode.air_date}}</strong>
-        </v-row>
-        <v-row>
-          Characters: <strong>{{episode.characters.length}}</strong>
+          <v-col>
+            <div>
+              Air date
+            </div>
+            <div>
+              <strong>{{episode.air_date}}</strong>
+            </div>
+          </v-col>
         </v-row>
       </div>
     </v-card-text>

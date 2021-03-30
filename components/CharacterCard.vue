@@ -4,18 +4,42 @@
       {{ character.name }}
     </v-card-title>
     <v-card-text>
-      <div class="pa-5">
+      <div class="pa-5" style="min-width: 200px">
         <v-row>
-          Species: <strong>{{character.species}}</strong>
+          <v-col> 
+            <div>
+              Species
+            </div>
+            <div>
+              <strong>{{character.species}}</strong>
+            </div>
+          </v-col>
+          <v-col>
+            <div>
+              Gender
+            </div>
+            <div>
+              <strong>{{character.gender}}</strong>
+            </div>
+          </v-col>
         </v-row>
         <v-row>
-          Gender: <strong>{{character.gender}}</strong>
-        </v-row>
-        <v-row>
-          Origin: <strong>{{character.origin.name}}</strong>
-        </v-row>
-        <v-row>
-          Appears in: <strong>{{character.episode.name}} episodes</strong>
+          <v-col>
+            <div>
+              Origin
+            </div>
+            <div>
+              <strong>{{character.origin.name}}</strong>
+            </div>
+          </v-col>
+          <v-col>
+            <div>
+              Appears in
+            </div>
+            <div>
+              <strong>{{character.episode.length}} episodes</strong>
+            </div>
+          </v-col>
         </v-row>
       </div>
     </v-card-text>
