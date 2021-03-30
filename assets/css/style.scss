@@ -3,3 +3,20 @@
     background-attachment: fixed;
     background-size: cover;
 }
+
+.highlight {
+    background: url('https://www.andyhooke.co.uk/wp-content/uploads/2018/02/yellow-brushstroke.png');
+    background-repeat: no-repeat;
+    background-size: 100% 95%;
+    padding: 25px;
+}
+
+.custom-title {
+    color: whitesmoke;
+    text-shadow: 1px 1px black;
+}
+
+.v-slide-group__next>.theme--light.v-icon,
+.v-slide-group__prev>.theme--light.v-icon {
+    color: whitesmoke !important;
+}

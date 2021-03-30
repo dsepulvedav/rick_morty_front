@@ -2,17 +2,17 @@
 
 <v-container>
   <v-row class="my-5">
-    <v-col class="text-center">
+    <div class="text-center highlight mx-auto">
       <h1>Char counter</h1>
       <h4>Program duration: {{ programDuration }} milliseconds</h4>
-    </v-col>
+    </div>
   </v-row>
 
   <v-row class="mb-8">
     <v-col>
-      <v-card>
+      <v-card color="rgb(0, 0, 0, 0.2)">
         <v-card-title>
-          <h4>Locations with '{{locationQuery}}' matches</h4>
+          <h4 class="custom-title">Locations with '{{locationQuery}}' matches</h4>
           <v-spacer></v-spacer>
           <v-chip class="ma-2" color="green" text-color="white">
             <v-avatar left class="green darken-4">
@@ -39,9 +39,9 @@
 
   <v-row class="mb-8">
     <v-col>
-      <v-card>
+      <v-card color="rgb(0, 0, 0, 0.2)">
         <v-card-title>
-          <h4>Episodes with '{{episodeQuery}}' matches</h4>
+          <h4 class="custom-title">Episodes with '{{episodeQuery}}' matches</h4>
           <v-spacer></v-spacer>
           <v-chip class="ma-2" color="green" text-color="white">
             <v-avatar left class="green darken-4">
@@ -68,9 +68,9 @@
 
   <v-row class="mb-8">
     <v-col>
-      <v-card>
+      <v-card color="rgb(0, 0, 0, 0.2)">
         <v-card-title>
-          <h4>Characters with '{{characterQuery}}' matches</h4>
+          <h4 class="custom-title">Characters with '{{characterQuery}}' matches</h4>
           <v-spacer></v-spacer>
           <v-chip class="ma-2" color="green" text-color="white">
             <v-avatar left class="green darken-4">
