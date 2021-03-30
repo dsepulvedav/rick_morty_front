@@ -1,28 +1,15 @@
 <template>
   <v-container>
     <v-row class="my-5">
-      <v-col>
+      <div class="text-center highlight mx-auto">
         <h1>Episode Locations</h1>
         <h4 v-if="!fetchingDone"><v-progress-linear indeterminate class="my-10"></v-progress-linear></h4>
         <h4 v-else>Program duration: {{ programDuration }} milliseconds</h4>
-      </v-col>
+      </div>
     </v-row>
-    <v-row v-bind:key="episode.name" v-for="episode in episodeResults" class="mb-8">
-      <v-col>
-        <v-card>
-          <v-card-title>
-            <h3>{{episode.name}}</h3> <small class="ml-2">{{ episode.episode}}</small>
-          </v-card-title>
-          <v-card-text>
-            <p>
-              Locations
-            </p>
-              <v-chip v-bind:key="origin.name" v-for="origin in episode.origins" class="ma-2">
-                {{origin.name}}
-              </v-chip>
-          </v-card-text>
-        </v-card>
-            <hr>
+    <v-row class="mb-8">
+      <v-col md="4" v-bind:key="episode.name" v-for="episode in episodeResults">
+        <EpisodeLocationCard :episode="episode" />
       </v-col>
     </v-row>
     <v-row class="mb-5" v-if="fetchingMore">
@@ -38,8 +25,12 @@
 import Vue from 'vue'
 import { Episode } from '~/models/episode'
 import { calculateDuration } from '~/utils/timeUtils'
+import EpisodeLocationCard from '~/components/EpisodeLocationCard.vue'
 
 export default Vue.extend({
+  components: {
+    EpisodeLocationCard
+  },
   computed: {
     programDuration(): number {
       return this.processTimes.length == 0 ? 0 : this.processTimes.reduce( (a,b) => a + b);
