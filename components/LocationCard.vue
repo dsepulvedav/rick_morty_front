@@ -1,24 +1,24 @@
 <template>
   <v-card class="ma-2">
     <v-card-title>
-      {{ location.name }}
+      {{ location ? location.name : '' }}
     </v-card-title>
     <v-card-text>
       <div class="pa-5">
         <v-row>
           <v-col>
             <div>Type</div>
-            <div><strong>{{location.type}}</strong></div>
+            <div><strong>{{ location ? location.type : ''}}</strong></div>
           </v-col>
           <v-col>
             <div>Residents</div>
-            <div><strong>{{location.residents.length}}</strong></div>
+            <div><strong>{{ location && location.residents ? location.residents.length : ''}}</strong></div>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <div>Dimension</div>
-            <div><strong>{{location.dimension}}</strong></div>
+            <div><strong>{{ location ? location.dimension : '' }}</strong></div>
           </v-col>
         </v-row>
       </div>

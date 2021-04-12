@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-2">
     <v-card-title>
-      {{ character.name }}
+      {{ character ? character.name : '' }}
     </v-card-title>
     <v-card-text>
       <div class="pa-5" style="min-width: 200px">
@@ -11,7 +11,7 @@
               Species
             </div>
             <div>
-              <strong>{{character.species}}</strong>
+              <strong>{{character ? character.species : '' }}</strong>
             </div>
           </v-col>
           <v-col>
@@ -19,7 +19,7 @@
               Gender
             </div>
             <div>
-              <strong>{{character.gender}}</strong>
+              <strong>{{character ? character.gender : '' }}</strong>
             </div>
           </v-col>
         </v-row>
@@ -29,7 +29,7 @@
               Origin
             </div>
             <div>
-              <strong>{{character.origin.name}}</strong>
+              <strong>{{ character && character.origin ? character.origin.name : ''}}</strong>
             </div>
           </v-col>
           <v-col>
@@ -37,7 +37,7 @@
               Appears in
             </div>
             <div>
-              <strong>{{character.episode.length}} episodes</strong>
+              <strong>{{ character && character.episode ? character.episode.length : ''}} episodes</strong>
             </div>
           </v-col>
         </v-row>

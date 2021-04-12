@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-2">
     <v-card-title>
-      {{ episode.name }}
+      {{ episode ? episode.name : '' }}
     </v-card-title>
     <v-card-text>
       <div class="pa-5">
@@ -9,13 +9,13 @@
           <v-col>
             <div>Episode</div>
             <div>
-              <strong>{{episode.episode}}</strong>
+              <strong>{{episode ? episode.episode : ''}}</strong>
             </div>
           </v-col>
           <v-col>
             <div>Characters</div>
             <div>
-              <strong>{{episode.characters.length}}</strong>
+              <strong>{{ episode && episode.characters ? episode.characters.length : ''}}</strong>
             </div>
           </v-col>
         </v-row>
@@ -25,7 +25,7 @@
               Air date
             </div>
             <div>
-              <strong>{{episode.air_date}}</strong>
+              <strong>{{ episode ? episode.air_date : ''}}</strong>
             </div>
           </v-col>
         </v-row>
