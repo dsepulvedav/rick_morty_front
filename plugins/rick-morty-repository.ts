@@ -5,9 +5,9 @@ export default (ctx: any, inject: any) => {
     const repository = createRepository(ctx.$axios)
 
     const repositories = {
-        characters  : repository.getAllCharacters,
-        episodes    : repository.getAllEpisodes,
-        locations   : repository.getAllLocations
+        characters  : repository.getCharacters,
+        episodes    : repository.getEpisodes,
+        locations   : repository.getLocations
     }
 
     inject('repositories', repositories)
