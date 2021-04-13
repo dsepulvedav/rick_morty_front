@@ -107,11 +107,13 @@ import LocationCard from '~/components/LocationCard.vue';
 import EpisodeCard from '~/components/EpisodeCard.vue';
 import CharacterCard from '~/components/CharacterCard.vue';
 import { Location } from '~/models/Location';
-import { calculateDuration } from '~/utils/timeUtils'
 import { Episode } from '~/models/episode';
 import { Character } from '~/models/character';
+import { calculateDuration } from '~/utils/timeUtils'
+import { countCharsInName } from '~/utils/charCounter'
 
 export default Vue.extend({
+  name: 'CharCounterPage',
   components: {
     LoadingCard,
     LocationCard,
@@ -121,17 +123,25 @@ export default Vue.extend({
   computed: {
     programDuration(): number {
       return calculateDuration(this.startTime, this.finishTime);
-    }
+    },
+    locationCount(): number {
+      if (!this.locationResults || !this.locationResults.length) return 0;
+      return countCharsInName(this.locationResults, this.locationQuery)
+    },
+    episodeCount(): number {
+      if (!this.episodeResults || !this.episodeResults.length) return 0;
+      return countCharsInName(this.episodeResults, this.episodeQuery)
+    },
+    characterCount(): number {
+      if (!this.characterResults || !this.characterResults.length) return 0;
+      return countCharsInName(this.characterResults, this.characterQuery)
+    },
   },
   data() {
     return {
       locationQuery: 'l',
       episodeQuery: 'e',
       characterQuery: 'c',
-
-      locationCount: 0,
-      episodeCount: 0,
-      characterCount: 0,
 
       locationResults: <Location[]>[],
       episodeResults: <Episode[]>[],
@@ -149,90 +159,39 @@ export default Vue.extend({
     this.getCharacters();
   },
   methods: {
-    
-    getLocations() {
-      this.getAllLocations('').then(
-        resLocations => {
+    async getLocations() {
+      (this as any).$repositories.locations('', this.locationQuery).then(
+        (resLocations: Location[]) => {
           this.locationResults = resLocations;
-          const arrMatches = this.locationResults
-            .map( i => i.name )
-            .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(new RegExp(this.locationQuery, 'g'));
-          this.locationCount = (arrMatches || []).length;
         }
       )
-      .catch( err => {
+      .catch( (err: any) => {
         console.error('ERROR in getAllLocations()', err);
       }).finally(() => this.finishTime = new Date());
     },
-    getAllLocations(cursor: string, data = [] as Location[]) : Promise<Location[]>{
-      const nextPage = cursor ? cursor.split('/').pop()! : ''
-      const url = nextPage ? `location/${nextPage}` : `location/?name=${this.locationQuery}`
-      return this.$axios.get(url)
-        .then(response => {
-          data.push(...response.data.results)
-            if (!response.data.info.next ) return data
-            return this.getAllLocations(response.data.info.next, data)
-        })
-    },
 
-
-    getEpisodes() {
-      this.getAllEpisodes('').then(
-        resEpisodes => {
+    async getEpisodes() {
+      (this as any).$repositories.episodes('', this.episodeQuery).then(
+        (resEpisodes: Episode[]) => {
           this.episodeResults = resEpisodes;
-          console.log({resEpisodes})
-          const arrMatches = this.episodeResults
-            .map( i => i.name )
-            .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(new RegExp(this.episodeQuery, 'g'));
-          console.log({arrMatches})
-          
-          this.episodeCount = (arrMatches || []).length;
         }
       )
-      .catch( err => {
+      .catch( (err: any) => {
         console.error('ERROR in getAllEpisodes()', err);
       }).finally(() => this.finishTime = new Date());
     },
-    getAllEpisodes(cursor: string, data = [] as Episode[]) : Promise<Episode[]>{
-      const nextPage = cursor ? cursor.split('/').pop()! : ''
-      const url = nextPage ? `episode/${nextPage}` : `episode/?name=${this.episodeQuery}`
-      return this.$axios.get(url)
-        .then(response => {
-          data.push(...response.data.results)
-            if (!response.data.info.next ) return data
-            return this.getAllEpisodes(response.data.info.next, data)
-        })
-    },
-
-    getCharacters() {
-      this.getAllCharacters('').then(
-        resCharacters => {
+    
+    async getCharacters() {
+      (this as any).$repositories.characters('', this.characterQuery).then(
+        (resCharacters: Character[]) => {
           this.characterResults = resCharacters;
-          const arrMatches = this.characterResults
-            .map( i => i.name )
-            .reduce( (a, b) => `${a}${b}`).toLowerCase()
-            .match(new RegExp(this.characterQuery, 'g'));
-          this.characterCount = (arrMatches || []).length;
         }
       )
-      .catch( err => {
+      .catch( (err: any) => {
         console.error('ERROR in getAllCharacters()', err);
-      }).finally(() => this.finishTime = new Date());
+      })
+      .finally(() => this.finishTime = new Date());
     },
-    getAllCharacters(cursor: string, data = [] as Character[]) : Promise<Character[]>{
-      const nextPage = cursor ? cursor.split('/').pop()! : ''
-      const url = nextPage ? `character/${nextPage}` : `character/?name=${this.characterQuery}`
-      return this.$axios.get(url)
-        .then(response => {
-          data.push(...response.data.results)
-            if (!response.data.info.next ) return data
-            return this.getAllCharacters(response.data.info.next, data)
-        })
-    },
-
-
   },
 })
 
