@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="ma-2">
         <v-card-text>
             <v-skeleton-loader
             type="article, actions"
