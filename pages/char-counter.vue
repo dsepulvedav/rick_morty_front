@@ -160,7 +160,7 @@ export default Vue.extend({
   },
   methods: {
     async getLocations() {
-      (this as any).$repositories.locations('', this.locationQuery).then(
+      (this as any).$repositories.locations(this.locationQuery).then(
         (resLocations: Location[]) => {
           this.locationResults = resLocations;
         }
@@ -171,7 +171,7 @@ export default Vue.extend({
     },
 
     async getEpisodes() {
-      (this as any).$repositories.episodes('', this.episodeQuery).then(
+      (this as any).$repositories.episodes(this.episodeQuery).then(
         (resEpisodes: Episode[]) => {
           this.episodeResults = resEpisodes;
         }
@@ -182,7 +182,7 @@ export default Vue.extend({
     },
     
     async getCharacters() {
-      (this as any).$repositories.characters('', this.characterQuery).then(
+      (this as any).$repositories.characters(this.characterQuery).then(
         (resCharacters: Character[]) => {
           this.characterResults = resCharacters;
         }
