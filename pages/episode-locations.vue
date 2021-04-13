@@ -61,16 +61,15 @@ export default Vue.extend({
       let bottom = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
       if (bottom && this.fetchingDone && !this.fetchingMore) this.fetchMoreEpisodes();
     },
-    getEpisodes() {
+    async getEpisodes() {
       const startTime = new Date();
       this.fetchingDone = false;
-      this.$axios
-        .get('https://ys9a1rlgc8.execute-api.us-east-1.amazonaws.com/dev/chipax-challenge/episode-locations')
-        .then((resEpisodes) => {
+      (this as any).$repositories.episodeLocations()
+        .then((resEpisodes: { data: { episodes: Episode[]; next: string } }) => {
           this.episodeResults = resEpisodes.data.episodes;
-          this.nextEpisodesPage = resEpisodes.data.next || null;
+          this.nextEpisodesPage = resEpisodes.data.next;
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.error('ERROR in getAllLocations()', err)
         }).finally( () => {
           this.fetchingDone = true;
@@ -78,18 +77,17 @@ export default Vue.extend({
         })
     },
     
-    fetchMoreEpisodes() {
+    async fetchMoreEpisodes() {
       if (this.nextEpisodesPage && !this.fetchingMore) {
         this.fetchingMore = true;
-        const startTime = new Date()
-        this.$axios
-          .get(`https://ys9a1rlgc8.execute-api.us-east-1.amazonaws.com/dev/chipax-challenge/episode-locations/${this.nextEpisodesPage}`)
-          .then((res) => {
+        const startTime = new Date();
+        (this as any).$repositories.moreEpisodeLocations(this.nextEpisodesPage)
+          .then((res: any) => {
             this.episodeResults.push(...res.data.episodes);
             this.nextEpisodesPage = res.data.next || null;
             
           })
-          .catch((err) => {
+          .catch((err: any) => {
             console.error('ERROR fetching more episodes',err);
           })
           .finally(() => {
